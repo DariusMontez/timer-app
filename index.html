@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, inititial-scale=1">
+    <meta charset="utf-8">
+    <style>
+    body {
+        display: grid;
+        align-items: center;
+        justify-items: center;
+        height: 100%;
+
+        background-color: #227;
+    }
+    #time {
+        font-size: 22vw;
+        margin: 0;
+        font-family: arial; 
+        color: white;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    </style>
+
+
+</head>
+
+<body>
+
+<p id="time">Loading...</p>
+
+<script>
+
+const START_TIME = 5.00;
+
+const app = {
+    init() {
+        this.$time = document.getElementById('time');
+        document.body.onclick = e => this.reset();
+        this.reset();
+        this.loop();
+        
+    },
+
+    loop() {
+        if (this.remaining <= 0) {
+            this.$time.textContent = "Time's up!";
+        } else {
+            this.$time.textContent = `${this.remaining.toFixed(2)}`;
+        }
+        
+        requestAnimationFrame(this.loop.bind(this));
+    },
+
+    reset() {
+        this.startTS = performance.now();
+    },
+
+    get time() {
+        return 1e-3*(performance.now() - this.startTS);
+    },
+
+    get remaining() {
+        return START_TIME - this.time;
+    }
+
+};
+
+//document.onload = e => app.init();
+app.init();
+</script>
+</body>
+</html>
